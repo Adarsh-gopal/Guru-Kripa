@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Automatic Customer Number And Product Number ",
-    "version": "13.0.1.11",
+    "version": "13.1",
     'license': 'LGPL-3',
-    'author': 'Prixgen Tech Solutions.Pvt.Ltm',
+    'author': 'Prixgen Tech Solutions Pvt. Ltd.',
+    'company': 'Prixgen Tech Solutions Pvt. Ltd.',
     'website': 'https://www.prixgen.com',
     "summary": """
     Automatically create the customer number from a sequence when a customer is being created.

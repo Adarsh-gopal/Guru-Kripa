@@ -11,12 +11,12 @@ class ResPartner(models.Model):
     z_partner = fields.Boolean('Partner')
     customer = fields.Boolean('Customer')
     vendor = fields.Boolean('Vendor')
-    transport_vendor= fields.Boolean('Transport Vendor')
-    distributor = fields.Boolean('Distributor')
+    # transport_vendor= fields.Boolean('Transport Vendor')
+    # distributor = fields.Boolean('Distributor')
     invoice_vendor = fields.Boolean('Invoice Vendor',store=True,compute='compute_vendor')
     invoice_customer = fields.Boolean('Invoice Customer',store=True,compute='compute_customer')
     invoice_filter = fields.Char('Invoice Filter',store=True,compute='compute_filter')
-    preffered_transporter = fields.Many2one('res.partner',string="Preffered Transporter",domain="[('transport_vendor', '=', 'True')]")
+    # preffered_transporter = fields.Many2one('res.partner',string="Preffered Transporter",domain="[('transport_vendor', '=', 'True')]")
 
 
     @api.model
@@ -26,8 +26,13 @@ class ResPartner(models.Model):
             sequence_type = self.env['partner.category'].browse(sequence_type)
             if sequence_type:
                 vals['ref'] = sequence_type.partner_category.next_by_id()
+        if vals.get('customer'):
+            vals['customer_rank'] = 1
+        elif vals.get('vendor'):
+            vals['supplier_rank'] = 1
 
         return super(ResPartner, self).create(vals)
+
 
     @api.onchange('z_partner_category')
     def Onchange_partner(self):
@@ -37,24 +42,24 @@ class ResPartner(models.Model):
             else:
                 l.z_partner = False
 
-    @api.depends('customer','distributor')
+    @api.depends('customer')
     def compute_customer(self):
         for l in self:
-            if l.customer == True or l.distributor == True:
+            if l.customer == True:
                 l.invoice_customer = True
-            elif l.customer == True and l.distributor == True:
-                l.invoice_customer = True
-            elif l.customer == False and l.distributor == False:
+            # elif l.customer == True and l.distributor == True:
+            #     l.invoice_customer = True
+            elif l.customer == False:
                 l.invoice_customer = False
 
-    @api.depends('vendor','transport_vendor')
+    @api.depends('vendor')
     def compute_vendor(self):
         for l in self:
-            if l.vendor == True or l.transport_vendor == True:
+            if l.vendor == True:
                 l.invoice_vendor = True
-            elif l.vendor == True and l.transport_vendor == True:
-                l.invoice_vendor = True
-            elif l.vendor == False and l.transport_vendor == False:
+            # elif l.vendor == True and l.transport_vendor == True:
+            #     l.invoice_vendor = True
+            elif l.vendor == False:
                 l.invoice_vendor = False
 
     @api.depends('invoice_customer','invoice_vendor')
@@ -64,6 +69,13 @@ class ResPartner(models.Model):
                 l.invoice_filter = 'sale'
             if l.invoice_vendor == True:
                 l.invoice_filter = 'purchase'
+
+    # @api.onchange('customer')
+    # def Onchange_customer(self):
+    #     if self.customer == True:
+    #         self.update({
+    #             'customer_rank':1,
+    #             })
 
 
 class ProductTemplate(models.Model):
@@ -135,7 +147,7 @@ class SaleOrder(models.Model):
     partner_id = fields.Many2one('res.partner', string='Customer', readonly=True,
         states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
         required=True, change_default=True, index=True, tracking=1,
-        domain="['|', ('customer','=',True),('distributor','=',True)]",)
+        domain="[('customer','=',True)]")
 
     @api.onchange('partner_id')
     def Onchange_partner(self):
@@ -152,7 +164,7 @@ class PurchaseOrder(models.Model):
     }
 
     partner_reference = fields.Char('Partner Category')
-    partner_id = fields.Many2one('res.partner', string='Vendor', required=False, states=READONLY_STATES, change_default=True, tracking=True, domain="['|', ('vendor', '=', True),('transport_vendor', '=', True)]", help="You can find a vendor by its Name, TIN, Email or Internal Reference.")
+    partner_id = fields.Many2one('res.partner', string='Vendor', required=False, states=READONLY_STATES, change_default=True, tracking=True, domain="[('vendor', '=', True)]", help="You can find a vendor by its Name, TIN, Email or Internal Reference.")
 
     @api.onchange('partner_id')
     def Onchange_partnerr(self):

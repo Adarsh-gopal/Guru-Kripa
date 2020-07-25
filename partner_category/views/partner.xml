@@ -68,8 +68,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//search" position="inside">
                     <filter string="Partner Category" name="zz_partner_reference" domain="[('z_partner_category','!=',False)]"/>
-                    <filter string="Distributor" name="distributor" domain="[('distributor','=', True)]"/>
-                    <filter string="Transport Vendor" name="transport_vendor" domain="[('transport_vendor','=', True)]"/>
+                    <!-- <filter string="Distributor" name="distributor" domain="[('distributor','=', True)]"/> -->
+                    <!-- <filter string="Transport Vendor" name="transport_vendor" domain="[('transport_vendor','=', True)]"/> -->
                     <field name="ref" filter_domain="[('ref', 'ilike', self)]"/>
                 </xpath>
             </field>
@@ -87,29 +87,29 @@
                 </xpath>
                 <xpath expr="/form/sheet/notebook/page[2]/group//field[@name='user_id']" position="before">
                     <field name="customer"/>
-                    <field name="distributor"/>
+                    <!-- <field name="distributor"/> -->
                     <field name="invoice_customer" invisible='1'/>
                 </xpath>
                 <xpath expr="/form/sheet/notebook/page[2]/group//field[@name='property_supplier_payment_term_id']" position="before">
                     <field name="vendor"/>
-                    <field name="transport_vendor"/>
+                    <!-- <field name="transport_vendor"/> -->
                     <field name="invoice_vendor" invisible='1'/>
                     <field name="invoice_filter" invisible='1'/>
                 </xpath>
-                <xpath expr="/form/sheet/notebook/page[2]/group//field[@name='property_payment_term_id']" position="after">
+                <!-- <xpath expr="/form/sheet/notebook/page[2]/group//field[@name='property_payment_term_id']" position="after">
                     <field name="preffered_transporter"/>
-                </xpath>
+                </xpath> -->
             </field>
         </record>
 
         
 
-        <record id="account.res_partner_action_customer" model="ir.actions.act_window">
+        <!-- <record id="account.res_partner_action_customer" model="ir.actions.act_window">
             <field name="context">{"search_default_distributor": 1, "search_default_customer": 1}</field>     
-        </record>
-        <record id="account.res_partner_action_supplier" model="ir.actions.act_window">
+        </record> -->
+        <!-- <record id="account.res_partner_action_supplier" model="ir.actions.act_window">
             <field name="context">{"search_default_supplier": 1, "search_default_transport_vendor": 1}</field>     
-        </record>
+        </record> -->
 
 
         <record id="res_category_view_form_inherit2" model="ir.ui.view">
@@ -118,7 +118,7 @@
             <field name="inherit_id" ref="product.product_category_form_view"/>
             <field name="arch" type="xml">
                 <field name="parent_id" position="after">
-                    <field name="sequence_id" options="{'no_create': True}"/>
+                    <field name="sequence_id" options="{'no_create': True}" invisible='1'/>
                 </field>
             </field>
         </record>
