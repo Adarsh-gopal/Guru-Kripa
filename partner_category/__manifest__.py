@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     "name": "Automatic Customer Number And Product Number ",
-    "version": "13.1",
+    "version": "13.1.1",
     'license': 'LGPL-3',
     'author': 'Prixgen Tech Solutions Pvt. Ltd.',
     'company': 'Prixgen Tech Solutions Pvt. Ltd.',

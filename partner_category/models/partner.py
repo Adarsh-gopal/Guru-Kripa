@@ -78,44 +78,7 @@ class ResPartner(models.Model):
     #             })
 
 
-class ProductTemplate(models.Model):
-    _inherit = 'product.template'
-    _name = _inherit
 
-    z_partner = fields.Boolean('Partner')
-    default_code= fields.Char(string='Internal Reference',compute = "_trackcode",store=True,readonly=True)
-    default_code1= fields.Char(string='Internal Reference')
-
-
-    @api.onchange('categ_id')
-    def Onchange_partner(self):
-        for l in self:
-            if l.categ_id.sequence_id:
-                l.z_partner = True
-            else:
-                l.z_partner = False
-
-    @api.depends('default_code1')
-    def _trackcode(self):
-        for l in self:
-            l.default_code = l.default_code1   
-
-    @api.model
-    def create(self, vals):
-        if 'z_partner' in vals and vals['z_partner']:
-            sequence_type =  vals.get('categ_id')
-            sequence_type = self.env['product.category'].browse(sequence_type)
-            if sequence_type:
-                new_code = sequence_type.sequence_id.next_by_id()
-                vals.update({'default_code1': new_code,'default_code': new_code})
-
-        return super(ProductTemplate, self).create(vals)
-
-
-class ProductCategory(models.Model):
-    _inherit = 'product.category'
-
-    sequence_id = fields.Many2one('ir.sequence',string='Sequence')
 
 
 class PartnerCategory(models.Model):
