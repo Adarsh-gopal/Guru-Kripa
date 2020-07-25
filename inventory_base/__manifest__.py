@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "inventory_base_1.2",
+    'name': "inventory_base_1.1",
 
     'summary': """
         Base Customization On Inventory(stock)""",
@@ -16,11 +16,11 @@
             7) Product Category, Cost in Log note and Category change authorization-----------(product_cost_categ_track.py, product_categ_change_access.xml)
     """,
 
-    'author': "Prixgen Tech Solutions Pvt. Ltd.",
-    'website': "https://www.prixgen.com",
-    'company': 'Prixgen Tech Solutions Pvt. Ltd.',
+    'author': "Prixgen Tech Solutions Pvt Ltd",
+    'website': "http://www.yourcompany.com",
+
     'category': 'Customization',
-    'version': '13.0.1.2',
+    'version': '13.0.1.3',
 
     'depends': ['base','stock','product'],
 
