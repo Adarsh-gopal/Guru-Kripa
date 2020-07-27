@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "inventory_base_13.0.1.4",
+    'name': "inventory_base_1.1",
 
     'summary': """
         Base Customization On Inventory(stock)""",
@@ -20,7 +20,7 @@
     'website': "http://www.yourcompany.com",
 
     'category': 'Customization',
-    'version': '13.0.1.4',
+    'version': '13.0.1.3',
 
     'depends': ['base','stock','product'],
 
