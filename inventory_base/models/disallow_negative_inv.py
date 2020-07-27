@@ -24,6 +24,11 @@ class ProductTemplate(models.Model):
         "then the validation of the related stock moves will be blocked if "
         "the stock level becomes negative with the stock move.")
 
+class StockLocation(models.Model):
+    _inherit = "stock.location"
+
+    allow_negative_stock = fields.Boolean()
+
 
 class StockQuant(models.Model):
     _inherit = 'stock.quant'
@@ -45,7 +50,8 @@ class StockQuant(models.Model):
                 quant.product_id.type == 'product' and
                 not quant.product_id.allow_negative_stock and
                 not quant.product_id.categ_id.allow_negative_stock and
-                quant.location_id.usage in ['internal', 'transit']
+                quant.location_id.usage in ['internal', 'transit'] or
+                not quant.location_id.allow_negative_stock
             ):
                 msg_add = ''
                 if quant.lot_id:
